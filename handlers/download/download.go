@@ -21,8 +21,6 @@ func PathExists(path string) bool {
 
 }
 
-const mountPoint = "/var/spacewalk/"
-
 func HandleRepodata() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		channel := c.Param("channel")
@@ -49,7 +47,7 @@ func HandlePackage(app *config.Application) gin.HandlerFunc {
 		if error != nil {
 			c.String(http.StatusNotFound, fmt.Sprintf("%s not found", path.Base(c.Request.URL.Path)))
 		}
-		downloadProcessor(c, path.Join(mountPoint, packageDb.Path))
+		downloadProcessor(c, path.Join(app.Config.GetMountPoint(), packageDb.Path))
 	}
 }
 

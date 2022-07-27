@@ -1,12 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"github.com/rjmateus/go-suma/config"
 	"github.com/rjmateus/go-suma/web"
 )
 
 func main() {
 	app := config.NewApplication()
+	fmt.Println(app.Config.GetMountPoint())
 	web.InitRoutes(app)
 	app.Engine.Run(":8088")
 
