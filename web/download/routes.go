@@ -3,11 +3,12 @@ package download
 import (
 	"github.com/rjmateus/go-suma/config"
 	"github.com/rjmateus/go-suma/handlers/download"
+	"github.com/rjmateus/go-suma/middleware"
 )
 
 func InitDownloadRoutes(app *config.Application) {
 
-	router := app.Engine.Group("/rhn/manager/download")
+	router := app.Engine.Group("/rhn/manager/download", middleware.JwtAuthenticationTokenMiddleware(app))
 	router.GET("/:channel/repodata/:file", download.HandleRepodata())
 	router.HEAD("/:channel/repodata/:file", download.HandleRepodata())
 

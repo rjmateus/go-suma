@@ -42,8 +42,8 @@ func HandlePackage(app *config.Application) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		channel := c.Param("channel")
-		pkinfo := parsePackageFileName(c.Request.URL.Path)
-		packageDb, error := download.GetDownloadPackage(app.DBGorm, channel, pkinfo.name, pkinfo.version, pkinfo.release, pkinfo.arch, pkinfo.checksum, pkinfo.epoch)
+		pkInfo := parsePackageFileName(c.Request.URL.Path)
+		packageDb, error := download.GetDownloadPackage(app.DBGorm, channel, pkInfo.name, pkInfo.version, pkInfo.release, pkInfo.arch, pkInfo.checksum, pkInfo.epoch)
 		if error != nil {
 			c.String(http.StatusNotFound, fmt.Sprintf("%s not found", path.Base(c.Request.URL.Path)))
 		}
@@ -70,6 +70,7 @@ func HandlerMediaFiles() gin.HandlerFunc {
 }
 
 func getMediaProductsFile(channelLabel string) string {
+	// FIXME needs implementation
 	return ""
 }
 
@@ -79,6 +80,7 @@ func downloadProcessor(c *gin.Context, filePath string) {
 	} else {
 		c.Header("Content-Type", "application/octet-stream")
 		c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", path.Base(filePath)))
+		// TODO add a flag to say if go should reply directly or through apache header
 		c.File(filePath)
 	}
 }
