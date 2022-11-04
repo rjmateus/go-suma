@@ -110,9 +110,8 @@ Running with jmeter
 
 ![Throughput existing](help/benchmark_current.png)
 
-## Throughput with go-suma
+## Throughput with go-suma configured with apache rewrite rule
 
 ![Throughput go-suma](help/benchmark-go-suma.png)
 
-
-more them 5 times the throughput
+## Throughput with go-suma direct connection
