@@ -29,8 +29,7 @@ example:
 `http://localhost:8088/rhn/manager/download/sle-module-basesystem15-sp3-updates-x86_64`
 
 # TODO
-- [ ] Handle debian packages
-- [ ] repo access verification. Now works as if check-tokens where set to false (property `java.salt_check_download_tokens`)
 - [ ] Download for media files
+- [ ] Add a flag to say if go should reply directly or through apache header
 - [ ] Parameterize the folder location
 - [ ] Automatic tests
