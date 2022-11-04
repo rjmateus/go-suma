@@ -1,3 +1,5 @@
+![logo](logo/go-suma-logo.png)
+
 NOTE: hackweek level code.
 
 # Suma Downloade
