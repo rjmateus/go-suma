@@ -1,4 +1,4 @@
-![logo](logo/go-suma-logo.png)
+![logo](help/go-suma-logo.png)
 
 NOTE: hackweek level code.
 
@@ -33,3 +33,86 @@ example:
 - [ ] Add a flag to say if go should reply directly or through apache header
 - [ ] Parameterize the folder location
 - [ ] Automatic tests
+
+# Install
+
+## 1. Install executable
+
+copy file "go-suma" from the repo to the suse manager server host at "/usr/bin/go-suma"
+
+## 2. intall service
+
+create the service file at "/usr/lib/systemd/system/go-suma.service"
+
+```
+[Unit]
+Description=The SUMA Download API
+After=syslog.target network.target
+
+[Service]
+Type=simple
+Restart=always
+User=nobody
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=go-suma
+ExecStart=/usr/bin/go-suma
+User=tomcat
+Group=tomcat
+
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+after this run:
+- `systemctl daemon-reload`
+- `systemctl start go-suma.service`
+
+Check the logs with: `journalctl -u go-suma -f`
+
+
+## 3. apache configuration
+
+
+Add the following line to the apache file located at "/etc/apache2/conf.d/zz-spacewalk-www.conf"
+(this file should be placed just before the line `RewriteRule ^/rhn(.*) ajp://localhost:8009/rhn$1 [P]` which in suma 4.3 is located at line 74)
+
+Line to add:
+
+```
+RewriteRule ^/rhn/manager/download(.*) http://localhost:8088/rhn/manager/download$1 [P]
+```
+
+after this restart apache with: `rcapache2 restart`
+
+
+# Benchmark
+
+Requests sequence (scenario):
+
+- Head request for repomd.xml: 200
+- Head request for repo key: 404
+- Head request for repo asc: 404
+- Head request for repo media: 404
+- GET request for repomd.xml: 200
+- GET request for one package: 200
+
+Calls:
+- 20 threads
+- 100 Loops
+
+Running with jmeter
+![jmeter project](help/go-suma.jmx)
+
+## Throughput existing code
+
+![Throughput existing](help/benchmark_current.png)
+
+## Throughput with go-suma
+
+![Throughput go-suma](help/benchmark-go-suma.png)
+
+
+more them 5 times the throughput

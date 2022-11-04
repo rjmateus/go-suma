@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+
 	"github.com/spf13/viper"
 )
 
@@ -13,10 +14,10 @@ var defaults = map[string]interface{}{
 func NewConfiguration() *SumaConfiguration {
 	baseConfig := viper.New()
 	baseConfig.SetConfigName("config") // name of config file (without extension)
-	baseConfig.SetConfigFile("rhn.conf")
+	baseConfig.SetConfigFile("/etc/rhn/rhn.conf")
 	baseConfig.SetConfigType("properties") // REQUIRED if the config file does not have the extension in the name
 	baseConfig.AddConfigPath("/etc/rhn/")  // path to look for the config file in
-	baseConfig.AddConfigPath(".")          // optionally look for config in the working directory
+	//baseConfig.AddConfigPath(".")          // optionally look for config in the working directory
 
 	for key, value := range defaults {
 		baseConfig.SetDefault(key, value)
@@ -49,4 +50,8 @@ func (c *SumaConfiguration) GetString(key string) string {
 
 func (c *SumaConfiguration) CheckDownloadToken() bool {
 	return c.baseConfig.GetBool("java.salt_check_download_tokens")
+}
+
+func (c *SumaConfiguration) GetServerSecretKey() string {
+	return c.baseConfig.GetString("server.secret_key")
 }

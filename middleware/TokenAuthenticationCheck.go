@@ -6,14 +6,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	jose "github.com/dvsekhvalnov/jose2go"
-	"github.com/gin-gonic/gin"
-	"github.com/rjmateus/go-suma/config"
-	channelRepo "github.com/rjmateus/go-suma/repositories/channel"
 	"log"
 	"net/http"
 	"strings"
 	"time"
+
+	jose "github.com/dvsekhvalnov/jose2go"
+	"github.com/gin-gonic/gin"
+	"github.com/rjmateus/go-suma/config"
+	channelRepo "github.com/rjmateus/go-suma/repositories/channel"
 )
 
 type jwtTokenData struct {
@@ -60,7 +61,7 @@ func JwtAuthenticationTokenMiddleware(app *config.Application) func(c *gin.Conte
 		// FIXME
 
 		//02 decodes token
-		sharedKey := []byte("27605eb97bc7a8ed6e80d451ed3149c9de2ee477b49075a764c6186ab6f62f20")
+		sharedKey := []byte(app.Config.GetServerSecretKey())
 
 		dst := make([]byte, hex.DecodedLen(len(sharedKey)))
 		n, err := hex.Decode(dst, sharedKey)
