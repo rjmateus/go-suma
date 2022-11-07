@@ -33,6 +33,8 @@ example:
 - [ ] Add a flag to say if go should reply directly or through apache header
 - [ ] Parameterize the folder location
 - [ ] Automatic tests
+- [ ] check if we can improve the authentication token check, which is what is taking performance
+- [ ] Apache is doing some contenction in reply. Check if using the apache header to server files is faster
 
 # Install
 
@@ -106,12 +108,22 @@ Calls:
 Running with jmeter
 ![jmeter project](help/go-suma.jmx)
 
-## Throughput existing code
+## Throughput with channel authentication ON
+
+### Existing code
 
 ![Throughput existing](help/benchmark_current.png)
 
-## Throughput with go-suma configured with apache rewrite rule
+### go-suma configured with apache rewrite rule
 
 ![Throughput go-suma](help/benchmark-go-suma.png)
 
-## Throughput with go-suma direct connection
+## Throughput with channel authentication OFF
+
+### Existing code
+
+![Throughput existing authentication OFF](help/benchmark_current_auth_off.png)
+
+### go-suma configured with apache rewrite rule
+
+![Throughput go-suma](help/benchmark-go-suma_auth_off.png)
